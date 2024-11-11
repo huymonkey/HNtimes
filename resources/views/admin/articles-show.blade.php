@@ -34,7 +34,7 @@
                 <div class="page-description">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Articles</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.articles') }}">Articles</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Show</li>
                         </ol>
                     </nav>
@@ -147,8 +147,7 @@
                                             </div>
                                             <div class="mb-3">
                                                 <h5 class="card-title mb-3">File path</h5>
-                                                <input id="media_file_path" type="text" class="form-control form-control-solid-bordered"
-                                                    placeholder="File fath..." disabled>
+                                                <input id="media_file_path" type="text" class="form-control form-control-solid-bordered" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -168,15 +167,12 @@
                                         <div>
                                             <div class="mb-3">
                                                 <h5 class="card-title mb-3">Title</h5>
-                                                <input id="audio_title" type="text" class="form-control form-control-solid-bordered"
-                                                    placeholder="Title audio..." disabled>
+                                                <input id="audio_title" type="text" class="form-control form-control-solid-bordered" disabled>
                                             </div>
                                             <div class="mb-3">
                                                 <h5 class="card-title mb-3">File path</h5>
-                                                <div class="w-100">
-                                                    <audio controls id="audio_file_path">
-                                                        <source src="" type="audio/mpeg">
-                                                    </audio>
+                                                <div class="w-100" id="audio_file_path">
+                                                    <input type="text" disabled class="form-control">
                                                 </div>
                                             </div>
                                         </div>

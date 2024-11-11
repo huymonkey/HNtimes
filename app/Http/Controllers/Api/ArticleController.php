@@ -210,7 +210,7 @@ class ArticleController extends Controller
 
     function update (UpdateArticleRequest $request, string $id)
     {
-        $article = Article::query()->find($id);
+        $article = Article::with(['subCategories', 'media', 'audio', 'tags', 'user'])->find($id);
 
         if (!$article) {
             return response()->json([
@@ -218,15 +218,11 @@ class ArticleController extends Controller
             ], 404);
         }
 
-        return response()->json([
-            'data' => $article
-        ], 200);
-
         $data = $request->validated();
 
         try {
 
-            $newArticle = DB::transaction(function () use ($data, $request) {
+            DB::transaction(function () use ($data, $request, $article) {
 
                 $dataArticle = $request->safe()->except(['sub_categories', 'media', 'audio', 'tags']);
                 $dataSubCategories = $data['sub_categories'] ?? [];
@@ -243,35 +239,62 @@ class ArticleController extends Controller
 
                 $dataArticle['title'] = Str::title($dataArticle['title']);
                 $dataArticle['slug'] = Str::slug($dataArticle['title']);
+                $dataArticle['is_trending'] ??= 0;
 
                 if ($request->hasFile('audio.file_path')) {
                     $dataAudio['file_path'] = Storage::put('audio', $request->file('audio.file_path'));
                 }
 
+                $currentImg = $article->img;
+                $currentAudioFilePath = $article->audio->file_path ?? null;
 
-                $newArticle = Article::query()->create($dataArticle);
-                $newArticle->subCategories()->attach($dataSubCategories);
+                if ($currentAudioFilePath) {
+                    $currentAudioFilePath = $article->audio->file_path;
+                }
+
+                $article->update($dataArticle);
+
+                $article->subCategories()->sync($dataSubCategories);
 
                 if (!empty($dataMedia)) {
-                    $newArticle->media()->create($dataMedia);
+                    $article->media()->updateOrCreate(
+                        ['article_id' => $article->id],
+                        $dataMedia
+                    );
                 }
 
                 if (!empty($dataAudio)) {
-                    $newArticle->audio()->create($dataAudio);
+                    $article->audio()->updateOrCreate(
+                        ['article_id' => $article->id],
+                        $dataAudio
+                    );
                 }
 
                 if (!empty($dataTags)) {
-                    $newArticle->tags()->attach($dataTags);
+                    $article->tags()->sync($dataTags);
                 }
 
-                return $newArticle->load(['subCategories', 'media', 'audio', 'tags']);
+                if (
+                    $request->hasFile('img')
+                    && $currentImg
+                    && Storage::exists($currentImg)
+                ) {
+                    Storage::delete($currentImg);
+                }
+
+                if (
+                    $request->hasFile('audio.file_path')
+                    && $currentAudioFilePath
+                    && Storage::exists($currentAudioFilePath)
+                ) {
+                    Storage::delete($currentAudioFilePath);
+                }
 
             });
 
             return \response()->json([
-                'message' => 'Create new article success !',
-                'data' => $newArticle,
-                'redirect' => route('admin.articles'),
+                'message' => 'Update article success !',
+                'data' => $article,
             ], Response::HTTP_CREATED);
 
         }

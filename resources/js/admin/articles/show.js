@@ -116,7 +116,9 @@ $(document).ready(async function () {
     if (article.audio) {
         $('#audio_title').val(article.audio.title);
         $('#audio_file_path').html(`
-            <source src="/storage/${article.audio.file_path}" type="audio/mpeg">
+            <audio controls>
+                <source src="/storage/${article.audio.file_path}" type="audio/mpeg">
+            </audio>
         `);
     }
 

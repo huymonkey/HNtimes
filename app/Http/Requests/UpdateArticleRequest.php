@@ -21,7 +21,7 @@ class UpdateArticleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -45,7 +45,7 @@ class UpdateArticleRequest extends FormRequest
                 Rule::unique(Article::class)->ignore($id)
             ],
             'img' => [
-                'required',
+                'nullable',
                 'image',
                 'max:5120'
             ],

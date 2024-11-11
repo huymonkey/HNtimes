@@ -21,7 +21,7 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(string $id)
     {
         $article = Article::withTrashed()->findOrFail($id);
 
@@ -33,9 +33,13 @@ class ArticleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Article $article)
+    public function edit(string $id)
     {
-        return view('admin.articles-edit');
+        $article = Article::withTrashed()->findOrFail($id);
+
+        $article->load(['subCategories', 'audio', 'media', 'user', 'tags']);
+
+        return view('admin.articles-edit', compact('article'));
     }
 
     public function comments()

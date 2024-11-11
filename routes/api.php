@@ -67,9 +67,9 @@ Route::name('api.')
                 Route::get    ('/show/{id}'          ,   'show')         ->name('show');
                 Route::get    ('/types'              ,   'types')        ->name('types');
                 Route::post   ('/'                   ,   'store')        ->name('store');
+                Route::put    ('/update/{id}'        ,   'update')       ->name('update');
                 Route::put    ('restore/{id}'        ,   'restore')      ->name('restore');
                 Route::put    ('restoreAll'          ,   'restoreAll')   ->name('restoreAll');
-                Route::patch  ('/update/{id}'        ,   'update')       ->name('update');
                 Route::delete ('/softDelete/{id}'    ,   'softDelete')   ->name('softDelete');
                 Route::delete ('delete/{id}'         ,   'delete')       ->name('delete');
                 Route::delete ('deleteAll'           ,   'deleteAll')    ->name('deleteAll');
