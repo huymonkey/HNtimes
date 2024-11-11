@@ -883,7 +883,7 @@ $(document).ready(async function () {
                 handleGetAllCategory();
                 $('#deleteSubCategory').modal('hide');
             },
-            errors: function (jqXHR) {
+            error: function (jqXHR) {
                 toastr.error(jqXHR.responseJSON.message, `Error [#${jqXHR.status}]`);
                 console.log('Status error: ' + jqXHR.status);
             }
@@ -911,7 +911,7 @@ $(document).ready(async function () {
                 handleGetAllTrash();
                 $('#deleteSubCategoryTrash').modal('hide');
             },
-            errors: function (jqXHR) {
+            error: function (jqXHR) {
                 toastr.error(jqXHR.responseJSON.message, `Error [#${jqXHR.status}]`);
                 console.log('Status error: ' + jqXHR.status);
             }

@@ -88,9 +88,9 @@ Route::middleware('auth')
             ->group(function () {
 
                 Route::get('create'             ,   'create')   ->name('create');
-                Route::get('{article}/show'     ,   'show')     ->name('show');
-                Route::get('{article}/edit'     ,   'edit')     ->name('edit');
-                Route::get('{article}/comments' ,   'comments') ->name('comments');
+                Route::get('show/{article}'     ,   'show')     ->name('show');
+                Route::get('edit/{article}'     ,   'edit')     ->name('edit');
+                Route::get('comments/{article}' ,   'comments') ->name('comments');
 
             });
     });

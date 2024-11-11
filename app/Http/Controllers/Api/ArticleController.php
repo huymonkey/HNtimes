@@ -7,6 +7,7 @@ use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
 use App\Models\Tag;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -18,23 +19,34 @@ use Illuminate\Support\Str;
 class ArticleController extends Controller
 {
 
-    function index ()
+    function index (Request $request)
     {
-        $articles = Article::getAll();
+        $query = Article::query();
+
+        $query->params($request->query());
+
+        $articles = $query->with(['subCategories', 'audio', 'media', 'user', 'tags'])
+            ->latest('id')
+            ->paginate(10);
 
         return response()->json($articles, 200);
     }
 
-    function trashes ()
+    function trashes (Request $request)
     {
-        $articles = Article::getAll(true);
+        $query = Article::onlyTrashed();
 
-        return response()->json($articles, 200);
+        $query->params($request->query());
+
+        $trashes = $query->with(['subCategories', 'audio', 'media', 'user', 'tags'])
+            ->paginate(10);
+
+        return response()->json($trashes, 200);
     }
 
     function show (string $id)
     {
-        $article = Article::query()->find($id);
+        $article = Article::withTrashed()->find($id);
 
         if (!$article) {
             return response()->json([
@@ -129,7 +141,7 @@ class ArticleController extends Controller
 
     function restore (string $id)
     {
-        $article = Article::query()->find($id);
+        $article = Article::query()->onlyTrashed()->find($id);
 
         if (!$article) {
             return response()->json([
@@ -198,7 +210,83 @@ class ArticleController extends Controller
 
     function update (UpdateArticleRequest $request, string $id)
     {
+        $article = Article::query()->find($id);
 
+        if (!$article) {
+            return response()->json([
+                'message' => 'No article found with id ' . $id
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => $article
+        ], 200);
+
+        $data = $request->validated();
+
+        try {
+
+            $newArticle = DB::transaction(function () use ($data, $request) {
+
+                $dataArticle = $request->safe()->except(['sub_categories', 'media', 'audio', 'tags']);
+                $dataSubCategories = $data['sub_categories'] ?? [];
+                $dataMedia = $data['media'] ?? [];
+                $dataAudio = $data['audio'] ?? [];
+                $dataTags = Tag::saveTags($data['tags'] ?? []);
+
+                if ($request->hasFile('img')) {
+                    $dataArticle['img'] = Storage::put('articles', $request->file('img'));
+                }
+
+                $dataArticle['status'] = Article::STATUS_PUBLISHED;
+                $dataArticle['published_at'] = now();
+
+                $dataArticle['title'] = Str::title($dataArticle['title']);
+                $dataArticle['slug'] = Str::slug($dataArticle['title']);
+
+                if ($request->hasFile('audio.file_path')) {
+                    $dataAudio['file_path'] = Storage::put('audio', $request->file('audio.file_path'));
+                }
+
+
+                $newArticle = Article::query()->create($dataArticle);
+                $newArticle->subCategories()->attach($dataSubCategories);
+
+                if (!empty($dataMedia)) {
+                    $newArticle->media()->create($dataMedia);
+                }
+
+                if (!empty($dataAudio)) {
+                    $newArticle->audio()->create($dataAudio);
+                }
+
+                if (!empty($dataTags)) {
+                    $newArticle->tags()->attach($dataTags);
+                }
+
+                return $newArticle->load(['subCategories', 'media', 'audio', 'tags']);
+
+            });
+
+            return \response()->json([
+                'message' => 'Create new article success !',
+                'data' => $newArticle,
+                'redirect' => route('admin.articles'),
+            ], Response::HTTP_CREATED);
+
+        }
+        catch (\Throwable $e) {
+
+            Log::error(
+                __CLASS__ . '@' . __FUNCTION__,
+                ['error' => $e->getMessage()]
+            );
+
+            return response()->json([
+                'message' => 'System error! Please try again in a few minutes.'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+
+        }
     }
 
     function softDelete (string $id)
@@ -275,7 +363,7 @@ class ArticleController extends Controller
     {
         try {
 
-            $trashesArticle = Article::onlyTrashed();
+            $trashesArticle = Article::onlyTrashed()->with('audio');
 
             if ($trashesArticle->count() == 0) {
                 return \response()->json([
@@ -285,7 +373,7 @@ class ArticleController extends Controller
 
             DB::transaction(function () use ($trashesArticle) {
 
-                $trashesArticle->load(['audio'])->each(function (Article $article) {
+                $trashesArticle->each(function (Article $article) {
                     Article::deleteArticle($article);
                 });
 

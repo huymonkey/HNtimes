@@ -5,97 +5,99 @@ import '@yaireo/tagify/dist/tagify.css';
 
 "use strict";
 
-async function init() {
 
-    $('#form-create-article [name="sub_categories[]"]').select2();
 
-    $('#summernote').summernote({
-        height: 700
-    });
+$(document).ready(async function () {
 
-    $('.note-editable').html("");
+    async function init() {
 
-    let tags = [];
+        $('#form-create-article [name="sub_categories[]"]').select2();
 
-    await $.ajax({
-        url: '/api/articles/types',
-        method: 'GET',
-        contentType: false,
-        processData: false,
-        success: function (response) {
+        $('#summernote').summernote({
+            height: 700
+        });
 
-            let types =  response.data.map((value, key) => {
-                return `
+        $('.note-editable').html("");
+
+        let tags = [];
+
+        await $.ajax({
+            url: '/api/articles/types',
+            method: 'GET',
+            contentType: false,
+            processData: false,
+            success: function (response) {
+
+                let types =  response.data.map((value, key) => {
+                    return `
                         <option value="${value}">${value}</option>
                     `;
-            })
+                })
 
-            $('#form-create-article [name="type"]').append(types.join(''));
-        },
-        errors: function (jqXHR) {
-            console.log('Error status: ' + jqXHR.status);
-        }
-    });
+                $('#form-create-article [name="type"]').append(types.join(''));
+            },
+            error: function (jqXHR) {
+                console.log('Error status: ' + jqXHR.status);
+            }
+        });
 
-    await $.ajax({
-        url: '/api/categories/withSubCategory',
-        method: 'GET',
-        contentType: false,
-        processData: false,
-        success: function (response) {
+        await $.ajax({
+            url: '/api/categories/withSubCategory',
+            method: 'GET',
+            contentType: false,
+            processData: false,
+            success: function (response) {
 
-            let categories =  response.data.map((category) => {
+                let categories =  response.data.map((category) => {
 
-                let subCategories = category.sub_categories.map((subCategory) => {
-                    return `
+                    let subCategories = category.sub_categories.map((subCategory) => {
+                        return `
                             <option value="${subCategory.id}">${subCategory.name}</option>
                         `;
-                });
+                    });
 
-                return `
+                    return `
                         <optgroup label="${category.name}">
                             ${subCategories.join('')}
                         </optgroup>
                     `;
-            })
+                })
 
-            $('#form-create-article [name="sub_categories[]"]').append(categories.join(''));
+                $('#form-create-article [name="sub_categories[]"]').append(categories.join(''));
 
-        },
-        errors: function (jqXHR) {
-            console.log('Error status: ' + jqXHR.status);
-        }
-    });
+            },
+            error: function (jqXHR) {
+                console.log('Error status: ' + jqXHR.status);
+            }
+        });
 
-    await $.ajax({
-        url: '/api/tags',
-        method: 'GET',
-        contentType: false,
-        processData: false,
-        success: function (response) {
-            tags = response.data.map(tag => tag.name);
-        },
-        errors: function (jqXHR) {
-            console.log('Error status: ' + jqXHR.status);
-        }
-    });
+        await $.ajax({
+            url: '/api/tags',
+            method: 'GET',
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                tags = response.data.map(tag => tag.name);
+            },
+            error: function (jqXHR) {
+                console.log('Error status: ' + jqXHR.status);
+            }
+        });
 
-    var tagify = new Tagify($('#form-create-article [name="tags"]')[0], {
-        whitelist: tags,
-        maxTags: 10,
-        dropdown: {
-            maxItems: 12,           // <- mixumum allowed rendered suggestions
-            classname: 'tags-look', // <- custom classname for this dropdown, so it could be targeted
-            enabled: 0,             // <- show suggestions on focus
-            closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
-        }
-    });
+        const tagify = new Tagify($('#form-create-article [name="tags"]')[0], {
+            whitelist: tags,
+            maxTags: 10,
+            dropdown: {
+                maxItems: 12,           // <- mixumum allowed rendered suggestions
+                classname: 'tags-look', // <- custom classname for this dropdown, so it could be targeted
+                enabled: 0,             // <- show suggestions on focus
+                closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+            }
+        });
 
-}
+    }
 
-init();
-
-$(document).ready(function () {
+    await init();
 
     $('#btn-create').on('click', function (e) {
 

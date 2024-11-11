@@ -72,18 +72,60 @@ class Article extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public static function getAll($isTrashes = false)
+    public function scopeParams($query, $params = [])
     {
-        return Article::with('subCategories')
-            ->with('audio')
-            ->with('media')
-            ->with('user')
-            ->with('tags')
-            ->when($isTrashes, function (Builder $query) {
-                $query->onlyTrashed();
-            })
-            ->latest('id')
-            ->paginate(10);
+
+        $_sort = $params['_sort'] ?? null;
+        $_term = $params['_term'] ?? null;
+
+        if ($_sort) {
+            switch ($_sort) {
+                case "title": {
+                    $query->orderBy('title');
+                    break;
+                }
+                case "-title": {
+                    $query->orderByDesc('title');
+                    break;
+                }
+                case "views": {
+                    $query->orderBy('views');
+                    break;
+                }
+                case "-views": {
+                    $query->orderByDesc('views');
+                    break;
+                }
+                case "created_at": {
+                    $query->orderBy('created_at');
+                    break;
+                }
+                case "-created_at": {
+                    $query->orderByDesc('created_at');
+                    break;
+                }
+                case "updated_at": {
+                    $query->orderBy('updated_at');
+                    break;
+                }
+                case "-updated_at": {
+                    $query->orderByDesc('updated_at');
+                    break;
+                }
+            }
+        }
+
+        if ($_term) {
+            $query->whereAny(['title', 'type', 'is_trending'], 'LIKE', "%$_term%");
+            $query->orWhere(function (Builder $query) use ($_term) {
+                $query->whereAny(['title', 'type', 'is_trending'], 'LIKE', "%$_term");
+            });
+            $query->orWhere(function (Builder $query) use ($_term) {
+                $query->whereAny(['title', 'type', 'is_trending'], 'LIKE', "%$_term%");
+            });
+        }
+
+        return $query;
     }
 
     public static function getAllType()
@@ -105,6 +147,8 @@ class Article extends Model
 
     public static function deleteArticle ($article)
     {
+        $audioFilePath = $article->audio->file_path ?? null;
+
         if (
             $article->img
             && Storage::exists($article->img)
@@ -113,7 +157,7 @@ class Article extends Model
         }
 
         if (
-            $article->audio->file_path
+            $audioFilePath
             && Storage::exists($article->audio->file_path)
         ) {
             Storage::delete($article->audio->file_path);

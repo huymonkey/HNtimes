@@ -118,7 +118,7 @@ class SubCategoryController extends Controller
 
             if ($articlesCount != 0) {
                 return \response()->json([
-                    'message' => "Sub category have $articlesCount. Doesn't delete this sub category !"
+                    'message' => "Sub category have $articlesCount article. Doesn't delete this sub category !"
                 ], 400);
             }
 

@@ -38,8 +38,7 @@
                     <h1>Articles</h1>
                     <ul class="nav nav-tabs mb-3 ps-0" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#list"
-                                type="button" role="tab" aria-controls="list" aria-selected="true">
+                            <button class="nav-link active" id="list-tab">
                                 List Articles
                             </button>
                         </li>
@@ -51,11 +50,9 @@
                             </button>
                         </li>--}}
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link d-flex align-items-center" id="profile-tab" data-bs-toggle="tab"
-                                data-bs-target="#trash" type="button" role="tab" aria-controls="trash"
-                                aria-selected="false">
+                            <button class="nav-link d-flex align-items-center" id="trashes-tab" type="button">
                                 Trash
-                                <span class="badge rounded-pill badge-danger ms-1">14</span>
+                                <span class="badge rounded-pill badge-danger ms-1" id="count-trashes"></span>
                             </button>
                         </li>
                     </ul>
@@ -77,27 +74,26 @@
                             </a>
                         </div>
                         <div class="col-3">
-                            <select class="filter" class="js-states form-control" tabindex="-1"
-                                style="display: none; width: 100%">
-                                <option>Sort by: Default</option>
-                                <option>Sort by: Title A - Z</option>
-                                <option>Sort by: Title Z - A</option>
-                                <option>Sort by: Views Low to High</option>
-                                <option>Sort by: Views High to Low</option>
-                                <option>Sort by: Created latest</option>
-                                <option>Sort by: Created oldest</option>
-                                <option>Sort by: Updated latest</option>
-                                <option>Sort by: Updated oldest</option>
+                            <select class="filter d-none form-select" tabindex="-1" style="width: 100%;" id="sort-article">
+                                <option value="">Sort by: Default</option>
+                                <option value="title">Sort by: Title A - Z</option>
+                                <option value="-title">Sort by: Title Z - A</option>
+                                <option value="-views">Sort by: Views High to Low</option>
+                                <option value="views">Sort by: Views Low to High</option>
+                                <option value="-created_at">Sort by: Created latest</option>
+                                <option value="created_at">Sort by: Created oldest</option>
+                                <option value="-updated_at">Sort by: Updated latest</option>
+                                <option value="updated_at">Sort by: Updated oldest</option>
                             </select>
                         </div>
                         <div class="col-4 offset-3">
                             <div class="row g-2">
                                 <div class="col-10">
                                     <input type="text" class="form-control form-control-material" aria-describedby="..."
-                                        placeholder="Search for title, type...">
+                                        placeholder="Search for title, type..." id="term-article">
                                 </div>
                                 <div class="col-2">
-                                    <button class="btn btn-success w-100 h-100 p-0">
+                                    <button class="btn btn-success w-100 h-100 p-0" id="btn-search-article">
                                         Search
                                     </button>
                                 </div>
@@ -122,89 +118,6 @@
                             <tr id="list-articles-block">
                                 <td></td>
                             </tr>
-                            {{--<tr>
-                                <td>1</td>
-                                <td>
-                                    <div class="avatar avatar-xl m-r-xs">
-                                        <img src="/admin/assets/images/avatars/avatar6.jpg" alt="">
-                                    </div>
-                                </td>
-                                <td>
-                                    Cristiano Ronaldo remains all the rage but Saudi Pro League
-                                    needs a title race Cristiano Ronaldo remains all the rage but Saudi
-                                    Pro League
-                                    needs a title race
-                                    <br> <br>
-                                    <span class="badge badge-style-light rounded-pill badge-danger me-1">
-                                        <div class="d-flex align-items-center">
-                                            <span>Feature</span>
-                                            <i class="material-icons-outlined">local_fire_department</i>
-                                        </div>
-                                    </span>
-                                    <span class="badge badge-style-light rounded-pill badge-primary me-1">
-                                        <div class="d-flex align-items-center">
-                                            <span>Trending</span>
-                                            <i class="material-icons-outlined">trending_up</i>
-                                        </div>
-                                    </span>
-                                    <span class="badge badge-style-light rounded-pill badge-secondary me-1">
-                                        <div class="d-flex align-items-center">
-                                            <span>Normal</span>
-                                            <i class="material-icons-outlined">more_horiz</i>
-                                        </div>
-
-                                    </span>
-                                </td>
-                                <td>
-                                    <!-- <span class="badge rounded-pill badge-secondary">Coming soon</span> -->
-                                    <span class="badge rounded-pill badge-success">Published</span>
-                                </td>
-                                <td>10</td>
-                                <td>October 1, 2024</td>
-                                <td>October 1, 2024</td>
-                                <td style="width: 1px;">
-                                    <div class="dropdown">
-                                        <button type="button" class="btn btn-secondary btn-burger"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="material-icons">more_vert</i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="option">
-                                            <li>
-                                                <a href="articles-show.html"
-                                                    class="dropdown-item text-info hover-background-color-ccc-important">
-                                                    <p class="mb-0">
-                                                        View detail
-                                                    </p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="articles-comments.html"
-                                                    class="dropdown-item text-light hover-background-color-ccc-important">
-                                                    <p class="mb-0">
-                                                        View Comments
-                                                    </p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="articles-edit.html"
-                                                    class="dropdown-item text-warning hover-background-color-ccc-important">
-                                                    <p class="mb-0">
-                                                        Edit
-                                                    </p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <button class="dropdown-item text-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#moveTrashArticle">
-                                                    <p class="mb-0">
-                                                        Move To Trash
-                                                    </p>
-                                                </button>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>--}}
                         </tbody>
                     </table>
 
@@ -351,35 +264,30 @@
                             </button>
                         </div>
                         <div class="col-3">
-                            <select class="filter" class="js-states form-control" tabindex="-1"
-                                style="display: none; width: 100%">
-                                <option>Sort by: Default</option>
-                                <optgroup label="Status">
-                                    <option>Sort by: Publish</option>
-                                    <option>Sort by: Coming soon</option>
-                                </optgroup>
-                                <optgroup label="Type">
-                                    <option>Sort by: Trending</option>
-                                    <option>Sort by: Feature</option>
-                                    <option>Sort by: Normal</option>
-                                </optgroup>
-                                <optgroup label="Views">
-                                    <option>Sort by: Views asc</option>
-                                    <option>Sort by: Views desc</option>
-                                </optgroup>
-                                <optgroup label="Date">
-                                    <option>Sort by: Created at asc</option>
-                                    <option>Sort by: Created at desc</option>
-                                    <option>Sort by: Updated at asc</option>
-                                    <option>Sort by: Updated at desc</option>
-                                    <option>Sort by: Published at desc</option>
-                                    <option>Sort by: Published at desc</option>
-                                </optgroup>
+                            <select class="filter d-none form-select" tabindex="-1" style="width: 100%;" id="sort-trashes">
+                                <option value="">Sort by: Default</option>
+                                <option value="title">Sort by: Title A - Z</option>
+                                <option value="-title">Sort by: Title Z - A</option>
+                                <option value="-views">Sort by: Views High to Low</option>
+                                <option value="views">Sort by: Views Low to High</option>
+                                <option value="-created_at">Sort by: Created latest</option>
+                                <option value="created_at">Sort by: Created oldest</option>
+                                <option value="-updated_at">Sort by: Updated latest</option>
+                                <option value="updated_at">Sort by: Updated oldest</option>
                             </select>
                         </div>
                         <div class="col-4 offset-1">
-                            <input type="text" class="form-control form-control-material" aria-describedby="..."
-                                placeholder="Search for id, title...">
+                            <div class="row g-2">
+                                <div class="col-10">
+                                    <input type="text" class="form-control form-control-material" aria-describedby="..."
+                                           placeholder="Search for title, type..." id="term-trashes">
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn btn-success w-100 h-100 p-0" id="btn-search-trashes">
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <table class="table table-hover bg-white">
@@ -387,117 +295,53 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Image</th>
-                                <th scope="col">Title</th>
+                                <th scope="col" class="w-50">Title</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Views</th>
                                 <th scope="col">Created at</th>
                                 <th scope="col">Updated at</th>
-                                <th scope="col">Published at</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>
-                                    <div class="avatar avatar-xl m-r-xs">
-                                        <img src="/admin/assets/images/avatars/avatar6.jpg" alt="">
-                                    </div>
-                                </td>
-                                <td>
-                                    Cristiano Ronaldo remains all the rage but Saudi Pro League
-                                    needs a title race
-                                    <br> <br>
-                                    <span class="badge badge-style-light rounded-pill badge-danger me-1">
-                                        <div class="d-flex align-items-center">
-                                            <span>Feature</span>
-                                            <i class="material-icons-outlined">local_fire_department</i>
-                                        </div>
-                                    </span>
-                                    <span class="badge badge-style-light rounded-pill badge-primary me-1">
-                                        <div class="d-flex align-items-center">
-                                            <span>Trending</span>
-                                            <i class="material-icons-outlined">trending_up</i>
-                                        </div>
-                                    </span>
-                                    <span class="badge badge-style-light rounded-pill badge-secondary me-1">
-                                        <div class="d-flex align-items-center">
-                                            <span>Normal</span>
-                                            <i class="material-icons-outlined">more_horiz</i>
-                                        </div>
-
-                                    </span>
-                                </td>
-                                <td>
-                                    <!-- <span class="badge rounded-pill badge-secondary">Coming soon</span> -->
-                                    <span class="badge rounded-pill badge-success">Published</span>
-                                </td>
-                                <td>10</td>
-                                <td>October 1, 2024</td>
-                                <td>October 1, 2024</td>
-                                <td>October 1, 2024</td>
-                                <td style="width: 1px;">
-                                    <div class="dropdown">
-                                        <button type="button" class="btn btn-secondary btn-burger"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="material-icons">more_vert</i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="option">
-                                            <li>
-                                                <a href="articles-show.html"
-                                                    class="dropdown-item text-info hover-background-color-ccc-important">
-                                                    <p class="mb-0">
-                                                        View detail
-                                                    </p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <button href="#!" class="dropdown-item text-warning"
-                                                    data-bs-toggle="modal" data-bs-target="#restoreArticle">
-                                                    <p class="mb-0">
-                                                        Restore
-                                                    </p>
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button class="dropdown-item text-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteArticle">
-                                                    <p class="mb-0">
-                                                        Delete
-                                                    </p>
-                                                </button>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
+                        <tbody id="list-articles-trashes">
 
                         </tbody>
                     </table>
+
+                    <!-- PAGINATE -->
+                    <nav aria-label="..." class="mt-4">
+                        <ul class="pagination justify-content-end" id="pagination-trashes">
+
+                        </ul>
+                    </nav>
                 </div>
             </div>
 
             <!-- MODAL -->
+
             <!-- Move Trash Article -->
             <div class="modal fade" id="moveTrashArticle" tabindex="-1" style="display: none;" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5>
-                                Do you want move article
-                                <strong class="text-capitalize fw-bolder">#1</strong>
-                                to trash ?
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-danger">Move to trash</button>
-                        </div>
+                        <form action="" method="POST" id="formMoveTrashArticle" data-id="">
+                            <div class="modal-header">
+                                <h5>
+                                    Do you want move article
+                                    <strong class="text-capitalize fw-bolder article-id">#</strong>
+                                    to trash ?
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-danger">Move to trash</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
+
             <!-- Publish All Articles -->
             <div class="modal fade" id="publishAllArticle" tabindex="-1" style="display: none;" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -564,21 +408,24 @@
                     </div>
                 </div>
             </div>
+
             <!-- Restore All Article -->
             <div class="modal fade" id="restoreAllArticle" tabindex="-1" style="display: none;" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5>
-                                Do you want restore all article ?
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-warning">Restore</button>
-                        </div>
+                        <form action="" method="POST" id="formRestoreAllArticle">
+                            <div class="modal-header">
+                                <h5>
+                                    Do you want restore all article ?
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-warning">Restore</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -586,17 +433,19 @@
             <div class="modal fade" id="deleteAllArticle" tabindex="-1" style="display: none;" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5>
-                                Do you want <strong class="fw-bolder">delete all</strong> article ?
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-danger">Delete</button>
-                        </div>
+                        <form action="" method="POST" id="formDeleteAllArticle">
+                            <div class="modal-header">
+                                <h5>
+                                    Do you want <strong class="fw-bolder">delete all</strong> article ?
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -604,19 +453,21 @@
             <div class="modal fade" id="restoreArticle" tabindex="-1" style="display: none;" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5>
-                                Do you want restore article
-                                <strong class="text-capitalize fw-bolder">#1</strong>
-                                ?
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-warning">Restore</button>
-                        </div>
+                        <form action="" method="POST" id="formRestoreArticle" data-id="">
+                            <div class="modal-header">
+                                <h5>
+                                    Do you want restore article
+                                    <strong class="text-capitalize fw-bolder article-id">#</strong>
+                                    ?
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-warning">Restore</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -624,19 +475,21 @@
             <div class="modal fade" id="deleteArticle" tabindex="-1" style="display: none;" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5>
-                                Do you want delete article
-                                <strong class="text-capitalize fw-bolder">#1</strong>
-                                ?
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-danger">Restore</button>
-                        </div>
+                        <form action="" method="POST" id="formDeleteArticle" data-id="">
+                            <div class="modal-header">
+                                <h5>
+                                    Do you want delete article
+                                    <strong class="text-capitalize fw-bolder article-id">#</strong>
+                                    ?
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

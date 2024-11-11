@@ -21,9 +21,13 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Article $article)
+    public function show($id)
     {
-        return view('admin.articles-show');
+        $article = Article::withTrashed()->findOrFail($id);
+
+        $article->load(['subCategories', 'audio', 'media', 'user', 'tags']);
+
+        return view('admin.articles-show', compact('article'));
     }
 
     /**

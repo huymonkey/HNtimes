@@ -38,8 +38,12 @@ export function formatDate (date) {
     return moment(date).format('MMMM Do YYYY, h:mm:ss A');
 }
 
+export function getHost() {
+    return 'http://localhost:8000';
+}
+
 $.ajaxSetup({
-    url: 'http://127.0.0.1:8000',
+    url: getHost(),
     dataType: 'json',
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

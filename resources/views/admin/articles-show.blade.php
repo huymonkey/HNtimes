@@ -59,75 +59,66 @@
                                     aria-labelledby="headingSeparatedOne" data-bs-parent="#accordionExample">
                                     <div class="accordion-body py-4">
                                         <div>
-                                            <div class="mb-3">
+                                            <div class="mb-4">
                                                 <div class="row">
                                                     <div class="col-4">
                                                         <h5 class="card-title mb-3">Image</h5>
-                                                        <img src="/admin/assets/images/world.jpg" class="img-thumbnail"
-                                                            alt="...">
+                                                        <img src="" class="img-thumbnail" alt="..." id="img">
                                                     </div>
                                                     <div class="col-5 offset-3">
                                                         <h5 class="card-title mb-3">Artist</h5>
                                                         <div class="avatar avatar-rounded">
-                                                            <img src="/admin/assets/images/avatars/avatar1.jpg"
-                                                                data-bs-toggle="tooltip" data-bs-placement="right"
-                                                                title="Peter Griffin">
+                                                            <img src="" data-bs-toggle="tooltip" data-bs-placement="right"
+                                                                title="" id="user">
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row mt-2">
-                                                    <div class="col-9 offset-3 text-danger" style="height: 23px;"></div>
-                                                </div>
                                             </div>
-                                            <div class="mb-3">
+                                            <div class="mb-4">
                                                 <h5 class="card-title mb-3">Title</h5>
-                                                <input type="text" class="form-control form-control-solid-bordered"
-                                                    placeholder="Title Article..." disabled>
-                                                <div class="text-danger mt-2" style="min-height: 18px; font-size: 14px;">
-                                                </div>
-
+                                                <input type="text" class="form-control form-control-solid-bordered" id="title" disabled>
                                             </div>
-                                            <div class="mb-3">
+                                            <div class="mb-4">
                                                 <h5 class="card-title mb-3">Description</h5>
-                                                <textarea name="" class="form-control form-control-solid-bordered" style="min-height: 100px;" disabled></textarea>
-                                                <div class="text-danger mt-2" style="min-height: 18px; font-size: 14px;">
-                                                </div>
-
+                                                <textarea id="description" class="form-control form-control-solid-bordered" style="min-height: 100px;" disabled></textarea>
                                             </div>
-                                            <div class="mb-3">
+                                            <div class="mb-4">
                                                 <div class="row">
                                                     <div class="col-7">
                                                         <h5 class="card-title mb-3">Type</h5>
-                                                        <select class="form-select" aria-label="Default select example"
-                                                            disabled>
-                                                            <option selected disabled>--Choose Type--
-                                                            </option>
-                                                            <option value="1">Feature</option>
-                                                            <option value="2">Normal</option>
+                                                        <select id="type" class="form-select" aria-label="Default select example" disabled>
+
                                                         </select>
-                                                        <div class="text-danger mt-2"
-                                                            style="min-height: 18px; font-size: 14px;">
-                                                        </div>
                                                     </div>
                                                     <div class="col-4 offset-1">
                                                         <h5 class="card-title d-inline">Is Trending</h5>
                                                         <div class="form-check form-switch mt-3">
-                                                            <input class="form-check-input" type="checkbox"
-                                                                id="flexSwitchCheckChecked" checked disabled>
-                                                        </div>
-                                                        <div class="text-danger mt-2"
-                                                            style="min-height: 18px; font-size: 14px;">
+                                                            <input id="is_trending" class="form-check-input" type="checkbox" disabled>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="mb-3">
+                                            <div class="mb-4">
+                                                <h5 class="card-title mb-3">Sub Categories</h5>
+                                                <select id="sub_categories" class="form-select" tabindex="-1"  style="display: none; width: 100%" multiple disabled>
+
+                                                </select>
+                                            </div>
+                                            <div class="mb-4">
                                                 <h5 class="card-title mb-3">Tags</h5>
-                                                <input type="text" class="form-control" placeholder="tag..."
-                                                    aria-describedby="tagHelp" disabled>
-                                                <div id="tagHelp" class="form-text">Tag feature: #world
-                                                    #feature</div>
-                                                <div class="text-danger mt-2" style="min-height: 18px; font-size: 14px;">
+                                                <input class="w-100" id="tags" disabled>
+                                                <div class="invalid-feedback"></div>
+                                            </div>
+                                            <div class="my-4">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <h5 class="card-title mb-2">Created at</h5>
+                                                        <p id="created_at"></p>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <h5 class="card-title mb-2">Updated at</h5>
+                                                        <p id="updated_at"></p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -142,26 +133,22 @@
                                         #2 Media
                                     </button>
                                 </h2>
-                                <div id="collapseSeparatedTwo" class="accordion-collapse collapse"
+                                <div id="collapseSeparatedTwo" class="accordion-collapse collapse show"
                                     aria-labelledby="headingSeparatedTwo" data-bs-parent="#accordionSeparatedExample">
                                     <div class="accordion-body">
                                         <div>
                                             <div class="mb-3">
                                                 <h5 class="card-title mb-3">Type</h5>
-                                                <select class="form-select" aria-label="Default select example" disabled>
-                                                    <option selected disabled>--Choose Type--</option>
-                                                    <option value="1">Video</option>
-                                                    <option value="2">Live</option>
+                                                <select id="media_type" class="form-select" aria-label="Default select example" disabled>
+                                                    <option value=""></option>
+                                                    <option value="video">Video</option>
+                                                    <option value="live">Live</option>
                                                 </select>
-                                                <div class="text-danger mt-2" style="min-height: 18px; font-size: 14px;">
-                                                </div>
                                             </div>
                                             <div class="mb-3">
-                                                <h5 class="card-title mb-3">File fath</h5>
-                                                <input type="text" class="form-control form-control-solid-bordered"
+                                                <h5 class="card-title mb-3">File path</h5>
+                                                <input id="media_file_path" type="text" class="form-control form-control-solid-bordered"
                                                     placeholder="File fath..." disabled>
-                                                <div class="text-danger mt-2" style="min-height: 18px; font-size: 14px;">
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -175,26 +162,21 @@
                                         #3 Audio
                                     </button>
                                 </h2>
-                                <div id="collapseSeparatedThree" class="accordion-collapse collapse"
+                                <div id="collapseSeparatedThree" class="accordion-collapse collapse show"
                                     aria-labelledby="headingSeparatedThree" data-bs-parent="#accordionSeparatedExample">
                                     <div class="accordion-body">
                                         <div>
                                             <div class="mb-3">
                                                 <h5 class="card-title mb-3">Title</h5>
-                                                <input type="text" class="form-control form-control-solid-bordered"
+                                                <input id="audio_title" type="text" class="form-control form-control-solid-bordered"
                                                     placeholder="Title audio..." disabled>
-                                                <div class="text-danger mt-2" style="min-height: 18px; font-size: 14px;">
-                                                </div>
                                             </div>
                                             <div class="mb-3">
                                                 <h5 class="card-title mb-3">File path</h5>
                                                 <div class="w-100">
-                                                    <audio controls>
-                                                        <source src="/admin/assets/img/audio1.mp3"
-                                                            type="audio/mpeg">
+                                                    <audio controls id="audio_file_path">
+                                                        <source src="" type="audio/mpeg">
                                                     </audio>
-                                                </div>
-                                                <div class="text-danger mt-2" style="min-height: 18px; font-size: 14px;">
                                                 </div>
                                             </div>
                                         </div>
@@ -209,8 +191,8 @@
                     <div class="row">
                         <div class="col">
                             <div class="card">
-                                <div class="card-body">
-                                    Hello Summernote
+                                <div class="card-body" id="content">
+
                                 </div>
                             </div>
                         </div>
@@ -235,5 +217,8 @@
 @endpush
 
 @push('js')
-
+    <script>
+        var article = {!! json_encode($article) !!};
+    </script>
+    @vite('resources/js/admin/articles/show.js')
 @endpush
